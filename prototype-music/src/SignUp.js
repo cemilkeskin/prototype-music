@@ -1,13 +1,23 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { withRouter } from "react-router";
 import { AuthContext } from "./Auth";
 import app from "./base";
 import "./SignUp.css";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import loader from "./loader.svg";
 
 const SignUp = ({ history }) => {
+
+  const [isLoading, setLoading] = useState(false);
+
   const handleSignUp = useCallback(async event => {
+
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
@@ -48,7 +58,14 @@ const SignUp = ({ history }) => {
         <input name="password" type="password" placeholder="Password" className="input" />
       </label>
       <br></br>
-      <button type="submit" className="buttonRegister">sign up</button>
+      {isLoading ? "": 
+        (<button type="submit" className="buttonLogin">sign up</button>)}
+        {isLoading ? 
+        <div className="buttonLoad">
+        <button type="submit" className="buttonLogin">
+          <img className="loader" src={loader}></img>
+          </button> </div>
+          : ""}  
     </form>
     <p className="link"> 
         Already got an account?  

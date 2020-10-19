@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   }, []); 
 
   if(pending){
-    return <><img src={loader}></img></> 
+    return <></> 
   }
 
   return ( 

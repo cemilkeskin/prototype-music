@@ -105,3 +105,15 @@ a:hover{
     opacity: 0.6;
     cursor: pointer;
 }
+
+
+.buttonLoad{
+    position: relative;
+}
+.loader{
+    opacity: 1;
+    position: absolute;
+    width: 40px;
+    top: 50px;
+    left: 45%;
+}

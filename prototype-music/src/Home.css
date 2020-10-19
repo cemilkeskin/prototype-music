@@ -25,8 +25,9 @@ header{
     font-weight: bold;
     font-style: italic; 
     font-size: 16px;
-    color: #eee;
+    color: #eee; 
 }
+
 .nav-area li a{
     transition: all .3s ease 0s;
     color: #fff;
