@@ -1,9 +1,12 @@
 import React, { useCallback, useContext } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "./base.js";
-import { AuthContext } from "./Auth.js";
+import { AuthContext } from "./Auth.js"; 
+import "./Login.css";
+import loader from "./loader.svg";
 
 const Login = ({ history }) => {
+
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
@@ -12,34 +15,43 @@ const Login = ({ history }) => {
         await app
           .auth()
           .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/");
+        history.push("/home"); 
       } catch (error) {
         alert(error);
       }
-    },
+    }, 
     [history]
   );
 
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to="/" />;
-  }
+    return <Redirect to="/home" />;
+  } 
 
   return (
-    <div>
-      <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
-        <label>
+    <div className="loginContainer"> 
+      <h1 className="loginTitle">log in</h1>
+      <form onSubmit={handleLogin}> 
+        <label className="loginLabel">
           Email
-          <input name="email" type="email" placeholder="Email" />
+          <br></br> 
+          <input name="email" type="email" placeholder="Email" className="input" />
         </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
+        <br></br>
+        <label className="loginLabel">
+          Password 
+          <br></br>
+          <input name="password" type="password" placeholder="Password" className="input" />
         </label>
-        <button type="submit">Log in</button>
+        <br></br>
+        <button type="submit" className="buttonLogin">log in</button>
       </form>
+      <p className="link">
+        Already got an account?  
+        <a href="/signup"> Click here</a> 
+      </p>
+     
     </div>
   );
 };

@@ -1,0 +1,107 @@
+.registerContainer{
+    background-color: blueviolet; 
+    position: fixed;
+    left: 50%;
+    top: 50%; 
+    transform: translate(-50%, -50%);
+    background-color:  #eeeeee;  
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    padding: 50px; 
+    max-width: 25%;
+    max-height: 50%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.registerTitle{
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 46px;
+}
+
+.registerLabel{
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold; 
+    font-style: italic;
+    font-size: 16px;
+    margin-bottom: 30px;
+} 
+
+.input {
+    width: 100%;
+    background-color: #fff;
+    padding: 12px 20px;
+    margin: 8px 0;
+    height: 55px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border-radius: 7px 7px 7px 7px;
+    border: 0px solid;
+    color: black;
+    border-color: #eee;
+}
+ 
+.input:focus {
+    background-color: white;
+    padding: 12px 20px; 
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    border: 0 solid;
+    outline: 0;
+    border-bottom: 3px solid #fcb045; 
+    transition: 0.3s all;
+}
+
+.buttonRegister{   
+    display: inline-block;
+    padding: 0.7em 1.7em;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.2em;
+    width: 100%; 
+    box-sizing: border-box;
+    color: #FFFFFF;
+    background: rgb(103,14,162);
+    background: linear-gradient(90deg, rgba(103,14,162,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+    text-align: center;
+    border-width: 0px;
+    border: none;
+    margin-top: 40px;
+    font-size: 18px;
+    font-weight: bold; 
+    font-style: italic; 
+    transition: 0.3s all; 
+    height: 60px;
+}
+ 
+.buttonRegister:hover{   
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+
+.link{
+    text-decoration: none;
+    margin-left: auto;
+    order: 2;
+    margin-top: 40px;
+    font-size: 16px;
+    color: #090909;
+
+}
+
+a{
+    text-decoration: none;
+    color:  rgba(252,176,69,1);
+    transition: 0.3s all;
+}
+
+a:hover{
+    opacity: 0.6;
+    cursor: pointer;
+}

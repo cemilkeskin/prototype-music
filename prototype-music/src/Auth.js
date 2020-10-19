@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import app from "./base.js";
+import loader from "./loader.svg";
 
 export const AuthContext = React.createContext();
 
@@ -8,17 +9,17 @@ export const AuthProvider = ({ children }) => {
   const [pending, setPending] = useState(true);
 
   useEffect(() => {
-    app.auth().onAuthStateChanged((user) => {
+    app.auth().onAuthStateChanged((user) => { 
       setCurrentUser(user)
       setPending(false)
     });
-  }, []);
+  }, []); 
 
   if(pending){
-    return <>Loading...</>
+    return <><img src={loader}></img></> 
   }
 
-  return (
+  return ( 
     <AuthContext.Provider
       value={{
         currentUser

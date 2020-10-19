@@ -1,6 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { withRouter } from "react-router";
+import { AuthContext } from "./Auth";
 import app from "./base";
+import "./SignUp.css";
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 const SignUp = ({ history }) => {
   const handleSignUp = useCallback(async event => {
@@ -10,27 +14,47 @@ const SignUp = ({ history }) => {
       await app
         .auth()
         .createUserWithEmailAndPassword(email.value, password.value);
-      history.push("/");
+      history.push("/home");
     } catch (error) {
       alert(error);
     }
   }, [history]);
 
+  const { currentUser } = useContext(AuthContext);
+
+ useEffect(() => {
+    if (currentUser) {
+         app.firestore().collection('users').doc(currentUser.uid).set({
+            email: currentUser.email,
+            uid: currentUser.uid
+      })   
+    } 
+ }, [currentUser]); 
+   
+
   return (
-    <div>
-      <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <div className="registerContainer">
+    <h1 className="registerTitle">sign up</h1>
+    <form onSubmit={handleSignUp}> 
+      <label className="registerLabel">
+        email
+        <br></br>
+        <input name="email" type="email" placeholder="Email" className="input" />
+      </label>
+      <br></br>
+      <label className="registerLabel"> 
+        password 
+        <br></br> 
+        <input name="password" type="password" placeholder="Password" className="input" />
+      </label>
+      <br></br>
+      <button type="submit" className="buttonRegister">sign up</button>
+    </form>
+    <p className="link"> 
+        Already got an account?  
+        <a href="/login"> Click here</a> 
+      </p>
+  </div>
   );
 };
 
