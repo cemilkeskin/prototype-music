@@ -8,7 +8,7 @@ import loader from "./loader.svg";
 const Login = ({ history }) => {
 
   const [isLoading, setLoading] = useState(false);
-
+  // const delay = ms => new Promise(res => setTimeout(res, ms));
   const handleLogin = useCallback(
 
     async event => {
@@ -16,7 +16,7 @@ const Login = ({ history }) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 2500);
+      }, 3500);
 
       event.preventDefault();
       const { email, password } = event.target.elements;
@@ -24,7 +24,7 @@ const Login = ({ history }) => {
         await app.auth().signInWithEmailAndPassword(email.value, password.value); 
         history.push("/home"); 
       } catch (error) {
-        alert(error);
+        alert(error); 
       }
     }, 
     [history]

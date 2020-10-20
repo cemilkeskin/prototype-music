@@ -14,9 +14,11 @@ header{
 .logo{
     cursor: pointer;
 }
+
 .nav-area{
     list-style: none;
 }
+ 
 .nav-area li{
     display: inline-block;
     padding: 0 15px;
@@ -76,9 +78,221 @@ header{
     bottom: 40px;
     right: 75px;
     transition: 0.3s all;
+    z-index: 10;
 }
 
 .add:hover{
    opacity: 0.6;
    cursor: pointer;
+}
+
+.addContainer{
+    background-color: #eee;
+    position: absolute;
+    bottom: 25px;
+    right: 60px;
+    width: 22%;
+    height: 65%;
+    animation: slidein 0.5s ease;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.addContainerItems{
+    padding: 10px 20px 10px 20px; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column; 
+    animation: popup 0.7s ease-in-out;
+}
+ 
+.addTitle{ 
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 38px;
+    margin-bottom: 40px;
+}
+
+.buttonUpload{ 
+    display: inline-block;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.2em; 
+    width: 40%; 
+    box-sizing: border-box;
+    color: #FFFFFF;
+    background: rgb(103,14,162);
+    background: linear-gradient(90deg, rgba(103,14,162,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+    text-align: center;
+    border-width: 0px;
+    border: none;
+    margin-top: 40px; 
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    transition: 0.3s all; 
+    height: 9%;
+    position: absolute;
+    left: 15px;
+    bottom: 11px;
+    text-align: center;
+}
+
+.inputAdd {
+    width: 100%;
+    background-color: #fff;
+    padding: 12px 20px;
+    margin: 8px 0;
+    height: 55px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border-radius: 7px 7px 7px 7px;
+    border: 0px solid;
+    color: black;
+    border-color: #eee;
+}
+ 
+.inputAdd:focus {
+    background-color: white;
+    padding: 12px 20px; 
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 10px 10px 10px 10px;
+    border: 0 solid;
+    outline: 0;
+    border-bottom: 3px solid #fcb045;  
+    transition: 0.1s all;
+    overflow: hidden;
+}
+
+.buttonUpload:hover{   
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+ 
+    display: inline-block;
+    padding: 0.7em 1.7em; 
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.2em; 
+    width: 40%; 
+    box-sizing: border-box;
+    color: #FFFFFF;
+    background: rgb(103,14,162);
+    background: linear-gradient(90deg, rgba(103,14,162,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+    text-align: center;
+    border-width: 0px;
+    border: none;
+    margin-top: 10px; 
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s all; 
+    height: 50px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.custom-file-upload:hover{    
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+/* 
+.custom-file-upload2 {
+ 
+    display: inline-block;
+    padding: 0.7em 1.7em; 
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.2em; 
+    width: 20%; 
+    box-sizing: border-box;
+    color: #FFFFFF;
+    background: rgb(103,14,162);
+    background: linear-gradient(90deg, rgba(103,14,162,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+    text-align: center;
+    border-width: 0px;
+    border: none;
+    margin-top: 10px; 
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s all; 
+    height: 18%;
+    position: relative;
+    vertical-align: top;
+}
+
+.custom-file-upload2:hover{    
+    opacity: 0.6;
+    cursor: pointer;
+} */
+
+
+.upload{
+    width: 30px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.plus{
+    width: 30px;
+    position: absolute;
+    top: 50%;
+    left:50%; 
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.buttons{
+    display: inline-block;
+    width: 100%;
+}
+
+.todo{
+    color: white;  
+}
+ 
+.todo-border{
+    position: relative; 
+    background-color: #090909; 
+    display: inline-block;
+    margin-right: 5px;
+    height: 25px;
+    border-radius: 3px;
+    overflow: hidden;
+    text-align: center;
+    padding: 2px 10px 2px 10px;
+}
+
+@keyframes slidein {
+    0% {
+        width: 0%;
+      }
+      100% {
+        width: 22%;
+      }
+      
+}
+
+@keyframes popup {
+    0% {
+        opacity: 0;
+      }
+   
+      70% {
+          opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+      
 }
