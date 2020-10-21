@@ -1,22 +1,25 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import app from "./base";
 import "./Home.css"
 import foto from "./add.png";
 import loader from "./loader.svg";
 import upload from "./computing-cloud.svg"
 import plus from "./add.svg"
+import profile from "./profile.svg"
+import { auth } from "firebase";
+import { AuthContext } from "./Auth.js"; 
+
 
 function TodoShow({ todo, index, completeTodo, removeTodo }) {
   return (
      
-    <div className="todo-border">
+    <div className="todo-border" onClick={() => removeTodo()}>
        <div className="todo"> 
         {todo.text}
        </div>
-    </div> 
+    </div>  
   );  
 };
-
 
 function TodoAdd({ addTodo }) {
   const [value, setValue] = React.useState("");
@@ -45,11 +48,10 @@ function TodoAdd({ addTodo }) {
 }
 
 
-
-
 const Home = () => {
 
   const [todos, setTodos] = React.useState([]); 
+   const { currentUser } = useContext(AuthContext);
 
   const addTodo = text => {
     const newTodos = [...todos, { text: text, isCompleted: false, type: 'text' }];
@@ -74,17 +76,26 @@ const Home = () => {
     const newTodos = [...todos];
     newTodos.splice(index, 1); 
     setTodos(newTodos); 
-  };
-
+  }; 
+ 
   const handleUpload = () => {
 
   }
 
+  const uploadFile = (e) => {
+
+    const file = e.target.files[0];
+    const storageRef = app.storage().ref('users/' + currentUser.uid + '/profile')
+    const fileRef = storageRef.child(file.name)
+    fileRef.put(file).then(() => {
+      console.log("Uploaded a file");
+    });
+  }; 
+ 
   // const rotateButton = () => { 
   //   setShown() = !setShown(); 
   // }; 
   
-
   return (
     <>
     <div>
@@ -94,11 +105,21 @@ const Home = () => {
             <ul class="nav-area">
               <li><a href="#">discover</a></li>
               <li><a href="#">ranking</a></li>
-              <li><a href="#">challenges</a></li>
+              <li><a href="#">challenges</a></li> 
               <li><a href="#">legal</a></li> 
             </ul>
           </nav>
+
+          <div className="rightNav">
+           
+          <div className="imgProfileDiv">
+            <img className="profile" src={profile}></img> 
+            </div>
+         
           <button className="buttonHome" onClick={() => app.auth().signOut()}>sign out</button>
+        
+          </div>
+          
     </header>
   
     {/* <img className="add" src={foto} onClick={() => rotateButton()} style={{ rotate: todo.isCompleted ? "90deg" : "0deg" }}></img> */}
@@ -106,10 +127,10 @@ const Home = () => {
     <div className="addContainer" style={{ display: placebo ? "flex" : "none" }}>
       <div className="addContainerItems">
        
-        <form onSubmit={handleUpload}> 
+        <form onSubmit={uploadFile}> 
         <h1 className='addTitle'>add a track</h1>
-        <label className="loginLabel">
-          track name
+        <label className="loginLabel"> 
+          track name 
           <br></br> 
           <input name="text" type="text" placeholder="track name..." className="inputAdd" required/>
         </label>
@@ -117,7 +138,8 @@ const Home = () => {
         <br></br>
 
         {/* <div className="buttons"> */}
-            <label for="file-upload" class="custom-file-upload">
+        <input id="file-upload" type="file"  onChange={uploadFile}/>  
+            <label for="file-upload" class="custom-file-upload" type="file" onChange={uploadFile}> 
               <img className="upload" src={upload}></img>
             </label> 
             {/* <button class="custom-file-upload2">
@@ -146,9 +168,6 @@ const Home = () => {
         
       </div>
 
-
-
-    <input id="file-upload" type="file"/>
         {isLoading ? "": 
         (<button type="submit" className="buttonUpload">upload</button>)}
         {isLoading ? 
@@ -162,10 +181,7 @@ const Home = () => {
     
     </div>
 
-
     </div>
- 
-
    
     </>
   );

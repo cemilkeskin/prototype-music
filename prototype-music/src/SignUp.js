@@ -37,7 +37,7 @@ const SignUp = ({ history }) => {
          app.firestore().collection('users').doc(currentUser.uid).set({
             email: currentUser.email,
             uid: currentUser.uid
-      })   
+      })
     } 
  }, [currentUser]); 
    

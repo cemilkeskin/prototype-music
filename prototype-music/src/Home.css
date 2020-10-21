@@ -65,6 +65,8 @@ header{
     font-style: italic;
     transition: 0.3s all; 
     height: 50px;       
+
+    margin-left: 50px;
 }
  
 .buttonHome:hover{   
@@ -202,6 +204,13 @@ input[type="file"] {
     cursor: pointer;
 }
 
+
+.todo-border:hover{
+    opacity: 0.7;
+    cursor: pointer;
+    background: rgb(103,14,162);
+    background: linear-gradient(90deg, rgba(103,14,162,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
+}
 /* 
 .custom-file-upload2 {
  
@@ -271,6 +280,23 @@ input[type="file"] {
     overflow: hidden;
     text-align: center;
     padding: 2px 10px 2px 10px;
+}
+
+.profile{
+    width: 35px; 
+    position: absolute;
+    top: -25px;
+    left: -50px;
+}
+
+.imgProfileDiv{
+    display: inline-block;
+    position: relative;
+}
+ 
+.rightNav{
+    display: inline-block;
+    position: relative;
 }
 
 @keyframes slidein {
