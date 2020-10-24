@@ -14,17 +14,19 @@ const Login = ({ history }) => {
     async event => {
 
       setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 3500);
+      // setTimeout(() => {
+      //  setLoading(false);
+      // }, 3500);
 
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
         await app.auth().signInWithEmailAndPassword(email.value, password.value); 
+        setLoading(false);
         history.push("/home"); 
       } catch (error) {
         alert(error); 
+        setLoading(false);
       }
     }, 
     [history]

@@ -51,7 +51,7 @@ function TodoAdd({ addTodo }) {
 const Home = () => {
 
   const [todos, setTodos] = React.useState([]); 
-   const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   const addTodo = text => {
     const newTodos = [...todos, { text: text, isCompleted: false, type: 'text' }];
@@ -62,10 +62,16 @@ const Home = () => {
     console.log(todos);
   }, [todos]);
 
+
+
   const [isShown, setShown] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingSubmit, setLoadingSubmit] = useState(false);
 
   const [placebo, setPlacebo] = useState(false);
+
+  const [fileUrl, setFileUrl] = useState(null) 
+  const [users, setUsers] = useState([])
 
   const handlePlacebo = () => {
     setPlacebo(!placebo); 
@@ -81,17 +87,59 @@ const Home = () => {
   const handleUpload = () => {
 
   }
+  
 
-  const uploadFile = (e) => {
+  const uploadChange = async (e) => {
 
+    setLoading(true);
     const file = e.target.files[0];
-    const storageRef = app.storage().ref('users/' + currentUser.uid + '/profile')
-    const fileRef = storageRef.child(file.name)
-    fileRef.put(file).then(() => {
-      console.log("Uploaded a file");
-    });
-  }; 
+    const storageRef = app.storage().ref();
+    const fileRef = storageRef.child(file.name);
+    await fileRef.put(file);
+    setFileUrl(await fileRef.getDownloadURL());
+    setLoading(false); 
+  };  
+
+  const uploadFile = async (e) => {
+
+
+    e.preventDefault()
+    setLoadingSubmit(true)
+    const filename = e.target.filename.value;
  
+    if (!filename || !fileUrl) {
+      return;
+    }
+
+    await app.firestore().collection("uploads").doc(currentUser.uid).collection("tracks").doc().set({
+      name: filename, 
+      file: fileUrl,
+      email: currentUser.email, 
+      uid: currentUser.uid
+    });
+    setLoadingSubmit(false)
+
+  }  
+ 
+  useEffect(() => { 
+    const fetchUsers = async () => {
+      const usersCollection = await app.firestore().collection('uploads').doc(currentUser.uid).collection("tracks").get()
+      console.log(usersCollection);
+      // const usersCollection = await app.firestore().collection('uploads').doc(currentUser.uid).collection("tracks").get()
+      // setUsers(usersCollection.docs.map(doc => { 
+      //   console.log(doc.data);
+      //   return doc.data()
+      // }))
+
+      setUsers(usersCollection.docs.map(doc => { 
+        console.log(doc.data);
+        return doc.data();
+      }))
+    } 
+    fetchUsers()
+  }, [])
+
+
   // const rotateButton = () => { 
   //   setShown() = !setShown(); 
   // }; 
@@ -121,6 +169,21 @@ const Home = () => {
           </div>
           
     </header>
+ 
+    <div>
+      {users.map(user => {
+
+        return <div className="uploadContainer">
+              <h1 className="uploadTitle">{user.name}</h1>
+      <p className="uploadDescription">{user.email}</p>
+          <audio controls>
+        <source src={user.file} type="audio/ogg"></source>
+         </audio>
+         <br></br>
+
+  </div>
+      })}
+    </div>
   
     {/* <img className="add" src={foto} onClick={() => rotateButton()} style={{ rotate: todo.isCompleted ? "90deg" : "0deg" }}></img> */}
     <img className="add" src={foto} onClick={handlePlacebo} style={{ rotate: placebo ? "45deg" : "0deg" }}></img> 
@@ -132,14 +195,14 @@ const Home = () => {
         <label className="loginLabel"> 
           track name 
           <br></br> 
-          <input name="text" type="text" placeholder="track name..." className="inputAdd" required/>
+          <input name="filename" type="text" placeholder="track name..." className="inputAdd" required/>
         </label>
 
-        <br></br>
+        <br></br> 
 
         {/* <div className="buttons"> */}
-        <input id="file-upload" type="file"  onChange={uploadFile}/>  
-            <label for="file-upload" class="custom-file-upload" type="file" onChange={uploadFile}> 
+        <input id="file-upload" type="file"  onChange={uploadChange}/>  
+            <label for="file-upload" class="custom-file-upload" type="file" accept="mp3">  
               <img className="upload" src={upload}></img>
             </label> 
             {/* <button class="custom-file-upload2">
@@ -164,13 +227,13 @@ const Home = () => {
                 todo={todo} 
                 removeTodo={removeTodo}  
             /> 
-        ))} 
+        ))}  
         
       </div>
 
-        {isLoading ? "": 
+        {isLoadingSubmit ? "": 
         (<button type="submit" className="buttonUpload">upload</button>)}
-        {isLoading ? 
+        {isLoadingSubmit ? 
         <div className="buttonUpload">
         <button type="submit" className="buttonUpload">
           <img className="loader" src={loader}></img>

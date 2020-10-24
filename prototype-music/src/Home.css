@@ -299,6 +299,19 @@ input[type="file"] {
     position: relative;
 }
 
+.uploadTitle{
+color: #eee;
+
+}
+
+.uploadDescription{
+    color: #eee;
+}
+
+.uploadContainer{
+    background-color: #1a1a1a;
+}
+
 @keyframes slidein {
     0% {
         width: 0%;

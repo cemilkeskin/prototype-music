@@ -14,9 +14,9 @@ const SignUp = ({ history }) => {
   const handleSignUp = useCallback(async event => {
 
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2500);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 2500);
 
     event.preventDefault();
     const { email, password } = event.target.elements;
@@ -24,9 +24,11 @@ const SignUp = ({ history }) => {
       await app
         .auth()
         .createUserWithEmailAndPassword(email.value, password.value);
+        setLoading(false);
       history.push("/home");
     } catch (error) {
       alert(error);
+      setLoading(false);
     }
   }, [history]);
 
