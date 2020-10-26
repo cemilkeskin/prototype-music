@@ -218,8 +218,8 @@ const Home = () => {
         {/* <div className="buttons"> */}
         {isLoading ? "": 
         ( <div>
-          <input id="file-upload" type="file"  onChange={uploadChange}/>  
-        <label for="file-upload" class="custom-file-upload" type="file" accept="mp3">  
+          <input id="file-upload" type="file" accept=".mp3" onChange={uploadChange}/>  
+        <label for="file-upload" class="custom-file-upload" type="file" accept=".mp3">  
           <img className="upload" src={upload}></img>
         </label>
           </div> )}
