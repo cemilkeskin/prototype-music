@@ -43,6 +43,7 @@ function TodoAdd({ addTodo }) {
            value={value}
            onChange={e => setValue(e.target.value)}/>
         </label>
+        <button type="submit" className="buttonUpload" onClick={handleSubmit}>add</button>
     </form>
   );
 }
@@ -54,7 +55,7 @@ const Home = () => {
   const { currentUser } = useContext(AuthContext);
 
   const addTodo = text => {
-    const newTodos = [...todos, { text: text, isCompleted: false, type: 'text' }];
+    const newTodos = [...todos, { text: text}];
     setTodos(newTodos);
   };
 
@@ -100,7 +101,7 @@ const Home = () => {
     setLoading(false); 
   };  
 
-  const uploadFile = async (e) => {
+  const uploadFile = async (e) => { 
 
 
     e.preventDefault()
@@ -108,35 +109,44 @@ const Home = () => {
     const filename = e.target.filename.value;
  
     if (!filename || !fileUrl) {
+      setLoadingSubmit(false)
       return;
+     
     }
-
+    setLoadingSubmit(true)
     await app.firestore().collection("uploads").doc(currentUser.uid).collection("tracks").doc().set({
       name: filename, 
       file: fileUrl,
       email: currentUser.email, 
-      uid: currentUser.uid
+      uid: currentUser.uid,
+      tags: {
+        todos
+      }
     });
+
+    await app.firestore().collection("allUploads").doc().set({
+      name: filename, 
+      file: fileUrl,
+      email: currentUser.email, 
+      uid: currentUser.uid,
+      tags: {
+        todos
+      }
+    });
+
     setLoadingSubmit(false)
 
   }  
  
   useEffect(() => { 
-    const fetchUsers = async () => {
-      const usersCollection = await app.firestore().collection('uploads').doc(currentUser.uid).collection("tracks").get()
-      console.log(usersCollection);
-      // const usersCollection = await app.firestore().collection('uploads').doc(currentUser.uid).collection("tracks").get()
-      // setUsers(usersCollection.docs.map(doc => { 
-      //   console.log(doc.data);
-      //   return doc.data()
-      // }))
-
-      setUsers(usersCollection.docs.map(doc => { 
-        console.log(doc.data);
-        return doc.data();
+    const fetchUsers = async () => { 
+      const usersCollection = await app.firestore().collection('allUploads').get()
+      //const usersCollection = await app.firestore().collection('allUploads').doc(currentUser.uid).collection("tracks").get()
+      setUsers(usersCollection.docs.map(doc => {
+        return doc.data()
       }))
-    } 
-    fetchUsers()
+    }
+    fetchUsers() 
   }, [])
 
 
@@ -148,11 +158,11 @@ const Home = () => {
     <>
     <div>
     <header>
-       <h1 className="Title">musify</h1>
+       <h1 className="Title">musify</h1> 
           <nav>
             <ul class="nav-area">
               <li><a href="#">discover</a></li>
-              <li><a href="#">ranking</a></li>
+              <li><a href="#">ranking</a></li> 
               <li><a href="#">challenges</a></li> 
               <li><a href="#">legal</a></li> 
             </ul>
@@ -169,20 +179,25 @@ const Home = () => {
           </div>
           
     </header>
- 
+
     <div>
       {users.map(user => {
 
         return <div className="uploadContainer">
               <h1 className="uploadTitle">{user.name}</h1>
       <p className="uploadDescription">{user.email}</p>
-          <audio controls>
+    
+
+          <audio controls className="audioControls">
         <source src={user.file} type="audio/ogg"></source>
          </audio>
          <br></br>
+         <br></br>
+         {user.tags.todos.map(todos =>  <div className="todo-border-home"><div className="todo">{todos.text}</div></div>)} 
 
   </div>
       })}
+
     </div>
   
     {/* <img className="add" src={foto} onClick={() => rotateButton()} style={{ rotate: todo.isCompleted ? "90deg" : "0deg" }}></img> */}
@@ -201,10 +216,22 @@ const Home = () => {
         <br></br> 
 
         {/* <div className="buttons"> */}
-        <input id="file-upload" type="file"  onChange={uploadChange}/>  
-            <label for="file-upload" class="custom-file-upload" type="file" accept="mp3">  
-              <img className="upload" src={upload}></img>
-            </label> 
+        {isLoading ? "": 
+        ( <div>
+          <input id="file-upload" type="file"  onChange={uploadChange}/>  
+        <label for="file-upload" class="custom-file-upload" type="file" accept="mp3">  
+          <img className="upload" src={upload}></img>
+        </label>
+          </div> )}
+        {isLoading ? 
+        <div>
+       <input id="file-upload" type="file"  onChange={uploadChange}/>  
+        <label for="file-upload" class="custom-file-upload" type="file" accept="mp3">  
+          <img className="loaderHome2" src={loader}></img>
+        </label> </div>
+          : ""}  
+
+       
             {/* <button class="custom-file-upload2">
               <img className="plus" src={plus}></img>
             </button> */}
@@ -234,9 +261,9 @@ const Home = () => {
         {isLoadingSubmit ? "": 
         (<button type="submit" className="buttonUpload">upload</button>)}
         {isLoadingSubmit ? 
-        <div className="buttonUpload">
+        <div> 
         <button type="submit" className="buttonUpload">
-          <img className="loader" src={loader}></img>
+          <img className="loaderHome" src={loader}></img>
           </button> </div>
           : ""}  
       </form>
