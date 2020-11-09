@@ -320,15 +320,20 @@ color: #eee;
 
 .uploadDescription{
     color: #eee;
+    display: inline-block;
+}
+
+.link{
+    display: inline-block;
 }
 
 .uploadContainer{
     background-color: #1a1a1a;
     margin-left: 10%;
     margin-right: 10%;
-    margin-bottom: 25px;
-    padding: 20px 60px 20px 60px;
-    border-radius: 7px;
+    margin-top: 30px;
+    padding: 20px 60px 30px 60px;
+    border-radius: 5px; 
 }
 
 

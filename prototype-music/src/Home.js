@@ -22,7 +22,7 @@ function TodoShow({ todo, index, completeTodo, removeTodo }) {
 };
 
 function TodoAdd({ addTodo }) {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(""); 
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -34,7 +34,7 @@ function TodoAdd({ addTodo }) {
   return (
     <form onSubmit={handleSubmit}>
       <label className="loginLabel">
-          add a tag
+          select a challenge
           <br></br>  
           <input 
            type="text"
@@ -43,7 +43,7 @@ function TodoAdd({ addTodo }) {
            value={value}
            onChange={e => setValue(e.target.value)}/>
         </label>
-        <button type="submit" className="buttonUpload" onClick={handleSubmit}>add</button>
+        <button type="submit" className="buttonUpload" onClick={handleSubmit}></button>
     </form>
   );
 }
@@ -71,8 +71,9 @@ const Home = () => {
 
   const [placebo, setPlacebo] = useState(false);
 
-  const [fileUrl, setFileUrl] = useState(null) 
-  const [users, setUsers] = useState([])
+  const [fileUrl, setFileUrl] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [usersCollection, setUsersCollection] = useState('');
 
   const handlePlacebo = () => {
     setPlacebo(!placebo); 
@@ -87,7 +88,7 @@ const Home = () => {
  
   const handleUpload = () => {
 
-  }
+  } 
   
 
   const uploadChange = async (e) => {
@@ -108,11 +109,11 @@ const Home = () => {
     setLoadingSubmit(true)
     const filename = e.target.filename.value;
  
-    if (!filename || !fileUrl) {
+    if (!filename || !fileUrl) { 
       setLoadingSubmit(false)
       return;
-     
     }
+
     setLoadingSubmit(true)
     await app.firestore().collection("uploads").doc(currentUser.uid).collection("tracks").doc().set({
       name: filename, 
@@ -138,16 +139,29 @@ const Home = () => {
 
   }  
  
-  useEffect(() => { 
-    const fetchUsers = async () => { 
-      const usersCollection = await app.firestore().collection('allUploads').get()
+    const fetchUsers = () => { 
+
+        app.firestore().collection('allUploads').onSnapshot(snapshot => {
+
+        setUsers([]);
+        snapshot.forEach(user => {
+          console.log(user.data());
+          setUsers(users => [...users, {...user.data()}]);
+        });
+      })
       //const usersCollection = await app.firestore().collection('allUploads').doc(currentUser.uid).collection("tracks").get()
-      setUsers(usersCollection.docs.map(doc => {
-        return doc.data()
-      }))
+      // setUsers(usersCollection.docs.map(doc => {4
+      //   return doc.data()
+      // }))
     }
-    fetchUsers() 
-  }, [])
+
+  useEffect(() => {
+    console.log(users);
+  }, [users])
+    
+  useEffect(() => { 
+    fetchUsers(); 
+  }, []) 
 
 
   // const rotateButton = () => { 
@@ -160,7 +174,7 @@ const Home = () => {
     <header>
        <h1 className="Title">musify</h1> 
           <nav>
-            <ul class="nav-area">
+            <ul className="nav-area">
               <li><a href="#">discover</a></li>
               <li><a href="#">ranking</a></li> 
               <li><a href="#">challenges</a></li> 
@@ -181,11 +195,14 @@ const Home = () => {
     </header>
 
     <div>
-      {users.map(user => {
+      {users.map((user, index) => {
 
-        return <div className="uploadContainer">
+        return <div key={index} className="uploadContainer">
               <h1 className="uploadTitle">{user.name}</h1>
-      <p className="uploadDescription">{user.email}</p>
+              <a className="link" href="/login">
+              <p className="uploadDescription">{user.email}</p>
+              </a>
+    
     
 
           <audio controls className="audioControls">
@@ -193,7 +210,7 @@ const Home = () => {
          </audio>
          <br></br>
          <br></br>
-         {user.tags.todos.map(todos =>  <div className="todo-border-home"><div className="todo">{todos.text}</div></div>)} 
+         {user.tags.todos.map((todos, index) =>  <div key={index} className="todo-border-home"><div className="todo">{todos.text}</div></div>)} 
 
   </div>
       })}
@@ -214,12 +231,12 @@ const Home = () => {
         </label>
 
         <br></br> 
-
+ 
         {/* <div className="buttons"> */}
         {isLoading ? "": 
         ( <div>
           <input id="file-upload" type="file" accept=".mp3" onChange={uploadChange}/>  
-        <label for="file-upload" class="custom-file-upload" type="file" accept=".mp3">  
+        <label htmlFor="file-upload" className="custom-file-upload" type="file" accept=".mp3">  
           <img className="upload" src={upload}></img>
         </label>
           </div> )}
