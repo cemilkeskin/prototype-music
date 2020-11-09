@@ -148,7 +148,7 @@ const Home = () => {
           console.log(user.data());
           setUsers(users => [...users, {...user.data()}]);
         });
-      })
+      }) 
       //const usersCollection = await app.firestore().collection('allUploads').doc(currentUser.uid).collection("tracks").get()
       // setUsers(usersCollection.docs.map(doc => {4
       //   return doc.data()
