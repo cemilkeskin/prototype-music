@@ -99,6 +99,7 @@ const Home = () => {
     const fileRef = storageRef.child(file.name);
     await fileRef.put(file);
     setFileUrl(await fileRef.getDownloadURL());
+    console.log(fileRef.getDownloadURL());
     setLoading(false); 
   };  
 
@@ -147,7 +148,7 @@ const Home = () => {
         snapshot.forEach(user => {
           console.log(user.data());
           setUsers(users => [...users, {...user.data()}]);
-        });
+        });  
       }) 
       //const usersCollection = await app.firestore().collection('allUploads').doc(currentUser.uid).collection("tracks").get()
       // setUsers(usersCollection.docs.map(doc => {4

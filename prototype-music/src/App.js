@@ -17,7 +17,7 @@ const App = () => {
           <Route exact path="/signup" component={SignUp} />
         </div>
       </Router>
-    </AuthProvider>
+    </AuthProvider> 
   );
 };
 
